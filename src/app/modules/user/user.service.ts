@@ -85,4 +85,17 @@ export class UserService {
       return user.avatar;
     }
   }
+
+  async deleteAvatar(userId: number): Promise<string> {
+    const response = await fetch(
+      `https://reqres.in/api/users/${userId}/avatar`,
+      {
+        method: 'DELETE',
+      },
+    );
+    if (!response.ok) {
+      throw new Error('Failed to delete avatar');
+    }
+    return 'Avatar deleted successfully';
+  }
 }

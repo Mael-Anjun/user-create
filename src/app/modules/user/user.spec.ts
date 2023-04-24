@@ -142,4 +142,30 @@ describe('UserService', () => {
       expect(userService.mongoService.getDb).toHaveBeenCalled();
     });
   });
+
+  describe('deleteAvatar', () => {
+    it('should delete the avatar of the given user', async () => {
+      const userId = 1;
+      const mockResponse = new Response(null, { status: 204 });
+      jest.spyOn(global, 'fetch').mockResolvedValue(mockResponse);
+
+      const result = await userService.deleteAvatar(userId);
+
+      expect(global.fetch).toHaveBeenCalledWith(
+        `https://reqres.in/api/users/${userId}/avatar`,
+        { method: 'DELETE' },
+      );
+      expect(result).toEqual('Avatar deleted successfully');
+    });
+
+    it('should throw an error if the API call fails', async () => {
+      const userId = 2;
+      const mockResponse = new Response(null, { status: 404 });
+      jest.spyOn(global, 'fetch').mockResolvedValue(mockResponse);
+
+      await expect(userService.deleteAvatar(userId)).rejects.toThrow(
+        'Failed to delete avatar',
+      );
+    });
+  });
 });

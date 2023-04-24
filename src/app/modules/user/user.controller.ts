@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get, Param } from '@nestjs/common';
+import { Controller, Post, Body, Get, Param, Delete } from '@nestjs/common';
 import { UserService } from './user.service';
 
 @Controller('api')
@@ -23,5 +23,11 @@ export class UserController {
   async getAvatar(@Param('userId') userId: string): Promise<string> {
     const avatar = await this.userService.getAvatar(userId);
     return avatar;
+  }
+
+  @Delete(':userId/avatar')
+  async deleteAvatar(@Param('userId') userId: number): Promise<string> {
+    const deletedAvatar = await this.userService.deleteAvatar(userId);
+    return deletedAvatar;
   }
 }
